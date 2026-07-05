@@ -18,8 +18,13 @@ const pool = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+    port: process.env.DB_PORT || 25633, // Menambahkan port dari env (Aiven menggunakan 25633)
     waitForConnections: true,
-    connectionLimit: 10
+    connectionLimit: 10,
+    ssl: {
+        rejectUnauthorized: false // WAJIB: Supaya Vercel diizinkan terkoneksi dengan SSL Aiven
+    },
+    allowPublicKeyRetrieval: true // WAJIB: Mengatasi error Public Key Retrieval yang tadi
 });
 
 // Endpoint API untuk menyimpan data siswa dan wali

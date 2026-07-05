@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrasi Siswa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">🎓</span>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900">EduFill Dashboard</h1>
+                    <p class="text-xs text-slate-500">Sistem Pengisian Data Siswa & Wali Murid</p>
+                </div>
+            </div>
+            <div class="text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">
+                Tahun Ajaran 2026/2027
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 uppercase">Total Siswa Terdaftar</p>
+                    <h3 id="statTotalSiswa" class="text-3xl font-bold text-slate-900 mt-1">0</h3>
+                </div>
+                <div class="text-3xl bg-blue-50 p-3 rounded-xl">👦</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 uppercase">Total Wali Murid</p>
+                    <h3 id="statTotalWali" class="text-3xl font-bold text-slate-900 mt-1">0</h3>
+                </div>
+                <div class="text-3xl bg-emerald-50 p-3 rounded-xl">👨‍👩‍👦</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 uppercase">Aktif Kontrol Dokumen</p>
+                    <h3 class="text-sm font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md mt-2 inline-block">Siap Cetak</h3>
+                </div>
+                <div class="text-3xl bg-amber-50 p-3 rounded-xl">📄</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <div class="lg:col-span-4 space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+                    <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <span>📝</span> Fill Dokumen Baru
+                    </h2>
+                    <div id="msgBox" class="hidden mb-4 p-4 rounded-xl text-sm font-medium"></div>
+
+                    <form id="formSiswa" class="space-y-4">
+                        <div class="border-b border-slate-100 pb-2">
+                            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Identitas Siswa</span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap Siswa</label>
+                            <input type="text" id="nama_siswa" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm" placeholder="Rani Amelia">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">NISN</label>
+                                <input type="text" id="nisn" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm" placeholder="12345678">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Kelas</label>
+                                <input type="text" id="kelas" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm" placeholder="10-IPA-1">
+                            </div>
+                        </div>
+
+                        <div class="border-b border-slate-100 pt-2 pb-2">
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Data Wali</span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap Wali</label>
+                            <input type="text" id="nama_wali" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm" placeholder="Budi Santoso">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">No. HP / WhatsApp</label>
+                            <input type="text" id="no_hp" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm" placeholder="08123456789">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Pekerjaan</label>
+                            <input type="text" id="pekerjaan" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm" placeholder="Karyawan Swasta">
+                        </div>
+
+                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-xl transition-all cursor-pointer text-sm shadow-md mt-4">
+                            Simpan Ke Database
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+                    <h2 class="text-md font-bold text-slate-900 mb-3 flex items-center gap-2">
+                        <span>⚙️</span> Pengaturan Cetak Laporan
+                    </h2>
+                    <p class="text-xs text-slate-500 mb-4">Ubah nama di bawah ini untuk memperbarui kolom tanda tangan secara otomatis saat cetak.</p>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Nama Petugas / Guru</label>
+                            <input type="text" id="configPetugas" value="Desi Ainul Amelia, S.Kom." class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Kota Penerbitan</label>
+                            <input type="text" id="configKota" value="Bandung" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Database Siswa Aktif</h2>
+                        <p class="text-xs text-slate-500">Gunakan tindakan di kolom paling kanan untuk cetak dokumen per anak.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 text-xs font-semibold uppercase border-b border-slate-100">
+                                <th class="py-4 px-6">Siswa</th>
+                                <th class="py-4 px-6">Kelas</th>
+                                <th class="py-4 px-6">Wali Murid</th>
+                                <th class="py-4 px-6">Kontak Wali</th>
+                                <th class="py-4 px-6 text-center">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelData" class="divide-y divide-slate-100 text-sm">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let listSiswa = [];
+
+        // 1. Fungsi memuat tabel utama
+        async function muatTabelSiswa() {
+            try {
+                const response = await fetch('/api/siswa');
+                const result = await response.json();
+                
+                if (result.success) {
+                    listSiswa = result.data;
+                    const tbody = document.getElementById('tabelData');
+                    tbody.innerHTML = '';
+                    
+                    document.getElementById('statTotalSiswa').innerText = listSiswa.length;
+                    document.getElementById('statTotalWali').innerText = listSiswa.length;
+
+                    if(listSiswa.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-400 font-medium">Belum ada data siswa.</td></tr>`;
+                        return;
+                    }
+
+                    listSiswa.forEach((siswa, index) => {
+                        // Setiap baris diberi id unik agar bisa dimanipulasi per kolom
+                        tbody.innerHTML += `
+                            <tr id="row-${index}" class="hover:bg-slate-50/80 transition-all border-b border-slate-100">
+                                <td class="py-4 px-6">
+                                    <div id="view-nama-${index}" class="font-semibold text-slate-900">${siswa.nama_siswa}</div>
+                                    <div class="text-xs text-slate-400 font-mono">NISN: ${siswa.nisn}</div>
+                                </td>
+                                <td class="py-4 px-6 font-medium text-slate-600" id="view-kelas-${index}">${siswa.kelas}</td>
+                                <td class="py-4 px-6">
+                                    <div id="view-wali-${index}" class="font-medium text-slate-900">${siswa.nama_wali}</div>
+                                    <div id="view-pekerjaan-${index}" class="text-xs text-slate-400">${siswa.pekerjaan}</div>
+                                </td>
+                                <td class="py-4 px-6 text-slate-500 font-mono text-xs" id="view-nohp-${index}">${siswa.no_hp}</td>
+                                <td class="py-4 px-6 text-center space-y-2 sm:space-y-0 sm:space-x-1" id="action-box-${index}">
+                                    <button onclick="aktifkanModeEdit(${index})" class="bg-amber-50 hover:bg-amber-100 text-amber-600 font-semibold px-2.5 py-1.5 rounded-lg text-xs cursor-pointer">
+                                        ✏️ Edit
+                                    </button>
+                                    <button onclick="printPerSiswa(${index})" class="bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold px-2.5 py-1.5 rounded-lg text-xs cursor-pointer">
+                                        🖨️ Cetak
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+            } catch (error) {
+                console.error('Gagal memuat dashboard:', error);
+            }
+        }
+
+        // 2. Fungsi Mengubah Kolom Menjadi Input Box (Inline)
+        function aktifkanModeEdit(index) {
+            const siswa = listSiswa[index];
+
+            // Ganti teks kolom menjadi input box sesuai ukuran kolom masing-masing
+            document.getElementById(`view-nama-${index}`).innerHTML = `<input type="text" id="edit-nama-${index}" value="${siswa.nama_siswa}" class="w-full px-2 py-1 border border-slate-300 rounded-md text-sm font-semibold">`;
+            document.getElementById(`view-kelas-${index}`).innerHTML = `<input type="text" id="edit-kelas-${index}" value="${siswa.kelas}" class="w-3/4 px-2 py-1 border border-slate-300 rounded-md text-sm">`;
+            document.getElementById(`view-wali-${index}`).innerHTML = `<input type="text" id="edit-wali-${index}" value="${siswa.nama_wali}" class="w-full px-2 py-1 border border-slate-300 rounded-md text-sm">`;
+            document.getElementById(`view-pekerjaan-${index}`).innerHTML = `<input type="text" id="edit-pekerjaan-${index}" value="${siswa.pekerjaan}" class="w-full px-2 py-1 border border-slate-300 rounded-md text-xs mt-1">`;
+            document.getElementById(`view-nohp-${index}`).innerHTML = `<input type="text" id="edit-nohp-${index}" value="${siswa.no_hp}" class="w-full px-2 py-1 border border-slate-300 rounded-md text-xs font-mono">`;
+
+            // Ubah tombol Aksi menjadi Simpan dan Batal
+            document.getElementById(`action-box-${index}`).innerHTML = `
+                <button onclick="simpanPerubahan(${index})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-2.5 py-1.5 rounded-lg text-xs cursor-pointer">
+                    💾 Simpan
+                </button>
+                <button onclick="muatTabelSiswa()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-2.5 py-1.5 rounded-lg text-xs cursor-pointer">
+                    ❌ Batal
+                </button>
+            `;
+        }
+
+        // 3. Fungsi Menembak API PUT untuk Menyimpan Hasil Edit ke Database
+        async function simpanPerubahan(index) {
+            const siswaLama = listSiswa[index]; // Ambil NISN asli sebagai key penanda di URL
+
+            const payloadUpdate = {
+                nama_siswa: document.getElementById(`edit-nama-${index}`).value,
+                kelas: document.getElementById(`edit-kelas-${index}`).value,
+                nama_wali: document.getElementById(`edit-wali-${index}`).value,
+                pekerjaan: document.getElementById(`edit-pekerjaan-${index}`).value,
+                no_hp: document.getElementById(`edit-nohp-${index}`).value,
+            };
+
+            try {
+                const response = await fetch(`/api/siswa/${siswaLama.nisn}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payloadUpdate)
+                });
+                
+                const result = await response.json();
+                
+                if(result.success) {
+                    alert("✨ Data berhasil diperbarui!");
+                    muatTabelSiswa(); // Muat ulang tabel agar kembali ke tampilan text biasa
+                } else {
+                    alert("⚠️ Gagal: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error saat menyimpan data baru:", error);
+                alert("Terjadi kesalahan jaringan.");
+            }
+        }
+
+        // 4. Fungsi Print Dokumen Dinamis (Sama seperti sebelumnya)
+        function printPerSiswa(index) {
+            const siswa = listSiswa[index];
+            const namaPenandatangan = document.getElementById('configPetugas').value || '......................';
+            const kotaPenerbitan = document.getElementById('configKota').value || 'Jakarta';
+
+            const windowCetak = window.open('', '_blank', 'width=850,height=700');
+            
+            const htmlKonten = `
+                <html>
+                <head>
+                    <title>Bukti Pendaftaran - ${siswa.nama_siswa}</title>
+                    <style>
+                        body { font-family: 'Arial', sans-serif; padding: 50px; color: #1e293b; line-height: 1.6; }
+                        .kop-surat { text-align: center; border-bottom: 3px solid #0f172a; padding-bottom: 15px; margin-bottom: 35px; }
+                        .kop-surat h2 { margin: 0; font-size: 22px; text-transform: uppercase; color: #0f172a; letter-spacing: 0.5px; }
+                        .kop-surat p { margin: 5px 0 0 0; font-size: 13px; color: #64748b; }
+                        .section-title { font-size: 14px; font-weight: bold; background: #f1f5f9; padding: 6px 12px; border-left: 4px solid #2563eb; color: #1e293b; margin-top: 25px; text-transform: uppercase; }
+                        .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                        .data-table td { padding: 8px 12px; vertical-align: top; font-size: 15px; }
+                        .data-table td.label { width: 35%; color: #475569; font-weight: 500; }
+                        .data-table td.value { color: #0f172a; font-weight: 600; }
+                        .ttd-box { margin-top: 60px; float: right; text-align: center; font-size: 15px; width: 280px; }
+                        .clear { clear: both; }
+                    </style>
+                </head>
+                <body>
+                    <div class="kop-surat">
+                        <h2>Kartu Arsip Data Siswa & Wali Murid</h2>
+                        <p>Lampiran Administrasi Pendaftaran Formal Dokumen Sekolah Aktif</p>
+                    </div>
+                    <div class="section-title">A. Atribut Administrasi Siswa</div>
+                    <table class="data-table">
+                        <tr><td class="label">Nomor Induk Siswa Nasional</td><td>:</td><td class="value">${siswa.nisn}</td></tr>
+                        <tr><td class="label">Nama Lengkap Siswa</td><td>:</td><td class="value">${siswa.nama_siswa}</td></tr>
+                        <tr><td class="label">Penempatan Kelas Saat Ini</td><td>:</td><td class="value">${siswa.kelas}</td></tr>
+                    </table>
+                    <div class="section-title">B. Penanggung Jawab / Wali Murid</div>
+                    <table class="data-table">
+                        <tr><td class="label">Nama Lengkap Wali</td><td>:</td><td class="value">${siswa.nama_wali}</td></tr>
+                        <tr><td class="label">Nomor Kontak Kontak (WA)</td><td>:</td><td class="value">${siswa.no_hp}</td></tr>
+                        <tr><td class="label">Klasifikasi Pekerjaan</td><td>:</td><td class="value">${siswa.pekerjaan}</td></tr>
+                    </table>
+                    <div class="ttd-box">
+                        <p>${kotaPenerbitan}, ${new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p style="margin-top: 5px;">Mengetahui, Petugas/Guru</p>
+                        <br><br><br><br>
+                        <p style="font-weight: bold; text-decoration: underline;">${namaPenandatangan}</p>
+                        <p style="font-size: 12px; color: #64748b; margin: 0;">NIP/Staff Administrasi</p>
+                    </div>
+                    <div class="clear"></div>
+                </body>
+                </html>
+            `;
+
+            windowCetak.document.write(htmlKonten);
+            windowCetak.document.close();
+
+            setTimeout(() => {
+                windowCetak.print();
+                windowCetak.close();
+            }, 400);
+        }
+
+        // Logic Submit Form Input Baru (Sama seperti sebelumnya)
+        document.getElementById('formSiswa').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msgBox = document.getElementById('msgBox');
+            msgBox.classList.add('hidden');
+
+            const payload = {
+                nama_siswa: document.getElementById('nama_siswa').value,
+                nisn: document.getElementById('nisn').value,
+                kelas: document.getElementById('kelas').value,
+                nama_wali: document.getElementById('nama_wali').value,
+                no_hp: document.getElementById('no_hp').value,
+                pekerjaan: document.getElementById('pekerjaan').value,
+            };
+
+            try {
+                const response = await fetch('/api/siswa', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    msgBox.className = "mb-4 p-4 rounded-xl text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
+                    msgBox.innerText = "✨ Hebat! Data siswa baru berhasil dimasukkan ke dalam sistem.";
+                    document.getElementById('formSiswa').reset();
+                    muatTabelSiswa(); 
+                } else {
+                    msgBox.className = "mb-4 p-4 rounded-xl text-sm font-medium bg-rose-50 text-rose-700 border border-rose-200";
+                    msgBox.innerText = result.message;
+                }
+            } catch (error) {
+                msgBox.className = "mb-4 p-4 rounded-xl text-sm font-medium bg-rose-50 text-rose-700 border border-rose-200";
+                msgBox.innerText = "Koneksi terputus. Gagal menghubungi server.";
+            }
+            msgBox.classList.remove('hidden');
+        });
+
+        document.addEventListener('DOMContentLoaded', muatTabelSiswa);
+    </script>
+</body>
+</html>
